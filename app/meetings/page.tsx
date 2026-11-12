@@ -1,11 +1,9 @@
 
 import MeetingCard from '@/components/MeetingCard';
-import { getBaseUrl } from '@/lib/get-base-url';
-import type { SacramentMeeting } from '@/lib/types';
+import { getMeetings } from '@/lib/meetings-db';
 
 export default async function MeetingsPage() {
-    const response = await fetch(`${getBaseUrl()}/api/meetings`);
-    const meetings: SacramentMeeting[] = await response.json();
+    const meetings = getMeetings();
 
     return (
         <div className="mx-auto max-w-5xl space-y-6 px-6 py-10">
