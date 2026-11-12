@@ -1,9 +1,7 @@
-
 import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import MeetingDetail from '@/components/MeetingDetail';
-import type { SacramentMeeting } from '@/lib/types';
-import { getBaseUrl } from '@/lib/get-base-url';
+import { getMeetingById } from '@/lib/meetings-db';
 
 interface MeetingPageProps {
     params: Promise<{ id: string }>;
@@ -12,19 +10,11 @@ interface MeetingPageProps {
 async function MeetingContent({ params }: MeetingPageProps) {
     const { id } = await params;
 
-    const response = await fetch(
-        `${getBaseUrl()}/api/meetings/${id}`
-    );
+    const meeting = getMeetingById(Number(id));
 
-    if (response.status === 400 || response.status === 404) {
+    if (!meeting) {
         notFound();
     }
-
-    if (!response.ok) {
-        throw new Error('Failed to fetch meeting');
-    }
-
-    const meeting: SacramentMeeting = await response.json();
 
     return (
         <div className="px-6 py-10">
