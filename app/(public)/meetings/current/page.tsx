@@ -19,7 +19,7 @@ async function CurrentMeetingContent() {
         String(sunday.getDate()).padStart(2, '0')
     ].join('-');
 
-    const meetings = getMeetings(date);
+    const meetings = await getMeetings(date);
 
     if (meetings.length === 0) {
         return <p>No meeting found for this Sunday.</p>;

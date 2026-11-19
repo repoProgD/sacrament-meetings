@@ -1,13 +1,34 @@
 
 import MeetingCard from '@/components/MeetingCard';
-import { getMeetings } from '@/lib/meetings-db';
+import { MeetingSearch } from '@/components/MeetingSearch';
+import { Pagination } from '@/components/Pagination';
+import {
+    getFilteredMeetings,
+    getMeetingsTotalPages,
+} from '@/lib/meetings-db';
 
-export default async function MeetingsPage() {
-    const meetings = getMeetings();
+type MeetingsPageProps = {
+    searchParams: Promise<{
+        query?: string;
+        page?: string;
+    }>;
+};
+
+export default async function MeetingsPage({
+    searchParams,
+}: MeetingsPageProps) {
+    const params = await searchParams;
+
+    const query = params.query ?? '';
+    const currentPage = Math.max(1, Number(params.page) || 1);
+
+    const [meetings, totalPages] = await Promise.all([
+        getFilteredMeetings(query, currentPage),
+        getMeetingsTotalPages(query),
+    ]);
 
     return (
         <div className="mx-auto max-w-5xl space-y-6 px-6 py-10">
-
             <header>
                 <h1 className="text-3xl font-bold">
                     Sacrament Meetings
@@ -16,6 +37,8 @@ export default async function MeetingsPage() {
                     Browse all meeting programs.
                 </p>
             </header>
+
+            <MeetingSearch />
 
             {meetings.length > 0 ? (
                 <div className="grid gap-4 sm:grid-cols-2">
@@ -28,10 +51,13 @@ export default async function MeetingsPage() {
                 </div>
             ) : (
                 <p className="text-gray-500">
-                    No meetings available.
+                    No meetings found.
                 </p>
             )}
 
+            {totalPages > 0 && (
+                <Pagination totalPages={totalPages} />
+            )}
         </div>
     );
 }
