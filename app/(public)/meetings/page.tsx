@@ -1,4 +1,5 @@
-
+// app/(public)/meetings/page.tsx
+import Link from 'next/link';
 import MeetingCard from '@/components/MeetingCard';
 import { MeetingSearch } from '@/components/MeetingSearch';
 import { Pagination } from '@/components/Pagination';
@@ -29,13 +30,22 @@ export default async function MeetingsPage({
 
     return (
         <div className="mx-auto max-w-5xl space-y-6 px-6 py-10">
-            <header>
-                <h1 className="text-3xl font-bold">
-                    Sacrament Meetings
-                </h1>
-                <p className="mt-2 text-gray-100">
-                    Browse all meeting programs.
-                </p>
+            <header className="flex items-center justify-between">
+                <div>
+                    <h1 className="text-3xl font-bold">
+                        Sacrament Meetings
+                    </h1>
+                    <p className="mt-2 text-gray-100">
+                        Browse all meeting programs.
+                    </p>
+                </div>
+
+                <Link
+                    href="/meetings/new"
+                    className="rounded bg-indigo-800 px-5 py-2 text-white hover:bg-indigo-700"
+                >
+                    New Meeting
+                </Link>
             </header>
 
             <MeetingSearch />
@@ -46,6 +56,7 @@ export default async function MeetingsPage({
                         <MeetingCard
                             key={meeting.id}
                             meeting={meeting}
+                            showActions
                         />
                     ))}
                 </div>

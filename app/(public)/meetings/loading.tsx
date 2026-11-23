@@ -1,3 +1,4 @@
+//app/(public)/meetings/loading.tsx
 export default function MeetingsLoading() {
     return (
         <div className="flex justify-center items-center p-12">

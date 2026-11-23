@@ -1,8 +1,10 @@
+//lib/types.tsx
 export type MeetingType =
-    | 'Testimony'
-    | 'Regular'
-    | 'Stake'
-    | 'General';
+    | 'testimony'
+    | 'special'
+    | 'regular'
+    | 'stake'
+    | 'general';
 
 export interface Hymn {
     number: number;
